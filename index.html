@@ -15,7 +15,7 @@
     </header>
 
     <div class="note">
-      <strong>Study today</strong> shows cards that are due plus up to 20 new cards per day. Your schedule is stored in this browser, so it remains when you return on the same device.
+      <strong>Study today</strong> prioritizes due cards and a 20-new-card daily target. When you finish that target, the site marks your daily goal complete but keeps extra new cards available so you can continue studying as long as you want. Your schedule is stored in this browser, so it remains when you return on the same device.
     </div>
 
     <section class="controls" aria-label="Study controls">
@@ -57,6 +57,14 @@
       <span id="stats" class="muted">Due 0 • New 101 • Learning 0 • Mature 0</span>
     </div>
     <div class="bar" aria-hidden="true"><div id="progress"></div></div>
+
+    <div id="dailyNotice" class="daily-notice" hidden role="status" aria-live="polite">
+      <span class="daily-notice-mark" aria-hidden="true">✓</span>
+      <div>
+        <strong>Daily goal complete</strong>
+        <span id="dailyNoticeText">You finished today’s target. Extra study is unlocked — keep going if you want.</span>
+      </div>
+    </div>
 
     <button id="card" class="card" type="button" aria-label="Flashcard. Click to flip.">
       <div class="card-top">
