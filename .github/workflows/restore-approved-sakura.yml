@@ -48,37 +48,40 @@ jobs:
           if count != 1:
               raise SystemExit("Current sakura image URL was not replaced")
 
-          css, desktop_count = re.subn(
-              r'(\.sakura-corner \{\n  position: absolute;\n)'
-              r'  top: [^;]+;\n  right: [^;]+;\n  width: [^;]+;\n  height: [^;]+;\n',
-              r'\1  top: -72px;\n  right: -92px;\n  width: 390px;\n  height: 521px;\n',
-              css,
-              count=1,
-          )
-          if desktop_count != 1:
-              raise SystemExit("Desktop sakura sizing block was not updated")
-
-          css, tablet_count = re.subn(
-              r'(@media \(max-width: 860px\) \{\n  \.sakura-corner \{\n)'
-              r'    top: [^;]+;\n    right: [^;]+;\n    width: [^;]+;\n    height: [^;]+;\n',
-              r'\1    top: -58px;\n    right: -102px;\n    width: 320px;\n    height: 427px;\n',
-              css,
-              count=1,
-          )
-          if tablet_count != 1:
-              raise SystemExit("Tablet sakura sizing block was not updated")
-
-          css, mobile_count = re.subn(
-              r'(@media \(max-width: 620px\) \{\n  \.sakura-corner \{\n)'
-              r'    top: [^;]+;\n    right: [^;]+;\n    width: [^;]+;\n    height: [^;]+;\n',
-              r'\1    top: -42px;\n    right: -112px;\n    width: 235px;\n    height: 314px;\n',
-              css,
-              count=1,
-          )
-          if mobile_count != 1:
-              raise SystemExit("Mobile sakura sizing block was not updated")
-
           css = css.replace("\n  image-rendering: auto;", "", 1)
+
+          marker = "/* Approved sakura sizing overrides */"
+          if marker in css:
+              css = css[:css.index(marker)].rstrip() + "\n"
+
+          css += '''
+
+/* Approved sakura sizing overrides */
+.sakura-corner {
+  top: -72px;
+  right: -92px;
+  width: 390px;
+  height: 521px;
+}
+
+@media (max-width: 860px) {
+  .sakura-corner {
+    top: -58px;
+    right: -102px;
+    width: 320px;
+    height: 427px;
+  }
+}
+
+@media (max-width: 620px) {
+  .sakura-corner {
+    top: -42px;
+    right: -112px;
+    width: 235px;
+    height: 314px;
+  }
+}
+'''
           path.write_text(css)
 
           pathlib.Path(".github/workflows/restore-approved-sakura.yml").unlink()
