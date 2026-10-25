@@ -47,6 +47,8 @@
   const shuffleBtn = $('shuffle');
   const resetBtn = $('reset');
   const clearProgressBtn = $('clearProgress');
+  const dailyNoticeEl = $('dailyNotice');
+  const dailyNoticeTextEl = $('dailyNoticeText');
   const gradeButtons = [...document.querySelectorAll('[data-grade]')];
 
   let srs = loadProgress();
@@ -74,6 +76,14 @@
 
   function todayKey(date = new Date()) {
     return [date.getFullYear(), String(date.getMonth() + 1).padStart(2, '0'), String(date.getDate()).padStart(2, '0')].join('-');
+  }
+
+  function introducedTodayCount() {
+    return Object.values(srs).filter((state) => state && state.introducedDate === todayKey()).length;
+  }
+
+  function dailyGoalComplete() {
+    return introducedTodayCount() >= DAILY_NEW_LIMIT;
   }
 
   function currentCard() {
@@ -196,9 +206,16 @@
         })
         .sort((a, b) => getState(a).due - getState(b).due);
 
-      const introducedToday = Object.values(srs).filter((state) => state.introducedDate === todayKey()).length;
+      const introducedToday = introducedTodayCount();
       const remainingNewSlots = Math.max(0, DAILY_NEW_LIMIT - introducedToday);
-      const newCards = base.filter((card) => !getState(card)).slice(0, remainingNewSlots);
+      const allNewCards = base.filter((card) => !getState(card));
+
+      // The daily limit is a target, not a hard stop. Once the target is reached,
+      // unlock every remaining new card in the current view for optional extra study.
+      const newCards = introducedToday >= DAILY_NEW_LIMIT
+        ? allNewCards
+        : allNewCards.slice(0, remainingNewSlots);
+
       queue = [...dueCards, ...newCards];
     } else {
       queue = base;
@@ -243,6 +260,20 @@
     progressEl.style.width = `${Math.round((deckStats.introduced / cards.length) * 100)}%`;
   }
 
+  function updateDailyNotice() {
+    if (!dailyNoticeEl || !dailyNoticeTextEl) return;
+
+    const complete = dailyGoalComplete();
+    const visible = mode.value === 'today' && complete;
+    dailyNoticeEl.hidden = !visible;
+    if (!visible) return;
+
+    const remainingNew = baseFilteredCards().filter((card) => !getState(card)).length;
+    dailyNoticeTextEl.textContent = remainingNew
+      ? `You finished today’s ${DAILY_NEW_LIMIT}-new-card target. Extra study is unlocked — ${remainingNew} new card${remainingNew === 1 ? '' : 's'} remain in this view, and you can keep going.`
+      : `You finished today’s ${DAILY_NEW_LIMIT}-new-card target. There are no new cards left in this view; switch the Study queue to All cards if you want another pass.`;
+  }
+
   function updateGradeLabels(card) {
     const now = Date.now();
     gradeButtons.forEach((button) => {
@@ -274,6 +305,7 @@
   function render() {
     const card = currentCard();
     const empty = !card;
+    updateDailyNotice();
 
     [prevBtn, nextBtn, flipBtn].forEach((button) => { button.disabled = empty; });
     listenBtn.disabled = empty || !('speechSynthesis' in window);
@@ -282,13 +314,17 @@
 
     if (empty) {
       positionEl.textContent = 'No cards in this queue';
-      metaEl.textContent = mode.value === 'today' ? 'Today’s study session is complete' : 'Try another filter';
+      metaEl.textContent = mode.value === 'today'
+        ? (dailyGoalComplete() ? 'Daily goal complete • extra study finished in this view' : 'Today’s study session is complete')
+        : 'Try another filter';
       sideEl.textContent = '';
       jpEl.hidden = false;
       romajiEl.hidden = false;
       englishEl.hidden = true;
       jpEl.textContent = mode.value === 'today' ? 'おつかれさまでした' : 'No matching cards';
-      romajiEl.textContent = mode.value === 'today' ? 'otsukaresama deshita — good work' : 'Change the category, study queue, or search.';
+      romajiEl.textContent = mode.value === 'today'
+        ? (dailyGoalComplete() ? 'Daily goal complete. No new or due cards remain in this view.' : 'otsukaresama deshita — good work')
+        : 'Change the category, study queue, or search.';
       scheduleEl.textContent = nextDueText();
       gradeButtons.forEach((button) => { button.disabled = true; });
       updateStats();
@@ -296,7 +332,8 @@
     }
 
     positionEl.textContent = `Card ${cursor + 1} of ${order.length} • ${cards.length} total`;
-    metaEl.textContent = `${card.cat} • source page ${card.page}`;
+    const extraStudy = mode.value === 'today' && dailyGoalComplete();
+    metaEl.textContent = `${card.cat} • source page ${card.page}${extraStudy ? ' • extra study' : ''}`;
     sideEl.textContent = flipped ? 'English' : 'Japanese → English';
     jpEl.hidden = flipped;
     romajiEl.hidden = flipped;
@@ -374,8 +411,19 @@
     if (!card || !flipped) return;
 
     const oldCursor = cursor;
+    const wasNew = !getState(card);
+    const beforeIntroducedToday = introducedTodayCount();
     const result = scheduleCard(card, grade);
-    announce(`${grade[0].toUpperCase() + grade.slice(1)} — next review ${formatDue(result.due).toLocaleLowerCase()}.`);
+    const afterIntroducedToday = introducedTodayCount();
+    const justFinishedDailyGoal = mode.value === 'today'
+      && wasNew
+      && beforeIntroducedToday < DAILY_NEW_LIMIT
+      && afterIntroducedToday >= DAILY_NEW_LIMIT;
+
+    const message = justFinishedDailyGoal
+      ? `Daily goal complete! You finished today’s ${DAILY_NEW_LIMIT}-new-card target. Extra study is unlocked — keep going as long as you want.`
+      : `${grade[0].toUpperCase() + grade.slice(1)} — next review ${formatDue(result.due).toLocaleLowerCase()}.`;
+
     flipped = false;
     manuallyShuffled = false;
     buildQueue();
@@ -386,6 +434,7 @@
       cursor = order.length ? Math.min(oldCursor, order.length - 1) : 0;
     }
     render();
+    announce(message);
   }
 
   category.addEventListener('change', () => rebuild());
