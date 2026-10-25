@@ -1,0 +1,76 @@
+name: Restore approved sakura overlay
+
+on:
+  push:
+    paths:
+      - '.github/workflows/restore-approved-sakura.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Restore the exact approved overlay without reverting other styles
+        shell: python
+        run: |
+          import pathlib
+          import re
+          import subprocess
+
+          approved_commit = "229669e49f1541bf3f498b4970f6f88e4aa0e81f"
+          old_css = subprocess.check_output(
+              ["git", "show", f"{approved_commit}:styles.css"],
+              text=True,
+          )
+          match = re.search(
+              r'background-image:\s*url\("(data:image/webp;base64,[^"]+)"\);',
+              old_css,
+          )
+          if not match:
+              raise SystemExit("Approved overlay data URI was not found")
+
+          approved_url = match.group(1)
+          path = pathlib.Path("styles.css")
+          css = path.read_text()
+
+          css, count = re.subn(
+              r'background-image:\s*url\("[^"]+"\);',
+              f'background-image: url("{approved_url}");',
+              css,
+              count=1,
+          )
+          if count != 1:
+              raise SystemExit("Current sakura image URL was not replaced")
+
+          replacements = {
+              "top: -58px;\n  right: -105px;\n  width: 620px;\n  height: 355px;":
+                  "top: -72px;\n  right: -92px;\n  width: 390px;\n  height: 521px;",
+              "top: -48px;\n    right: -132px;\n    width: 500px;\n    height: 287px;":
+                  "top: -58px;\n    right: -102px;\n    width: 320px;\n    height: 427px;",
+              "top: -34px;\n    right: -155px;\n    width: 390px;\n    height: 224px;":
+                  "top: -42px;\n    right: -112px;\n    width: 235px;\n    height: 314px;",
+          }
+          for before, after in replacements.items():
+              if before not in css:
+                  raise SystemExit(f"Expected sizing block missing: {before!r}")
+              css = css.replace(before, after, 1)
+
+          css = css.replace("\n  image-rendering: auto;", "", 1)
+          path.write_text(css)
+
+          workflow = pathlib.Path(".github/workflows/restore-approved-sakura.yml")
+          workflow.unlink()
+
+      - name: Commit restored artwork
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add styles.css .github/workflows/restore-approved-sakura.yml
+          git commit -m "Restore approved cherry blossom overlay"
+          git push
