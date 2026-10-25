@@ -105,18 +105,18 @@ main {
 
 
 
-/* Decorative cherry-blossom branch reaching in from the upper-right corner */
+/* Fuller cherry-blossom canopy inspired by the supplied reference */
 .sakura-corner {
   position: absolute;
-  top: -38px;
-  right: -122px;
-  width: 470px;
-  height: 290px;
+  top: -78px;
+  right: -155px;
+  width: 610px;
+  height: 390px;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.88;
+  opacity: 0.93;
   transform-origin: top right;
-  filter: drop-shadow(0 8px 14px rgba(75, 51, 39, 0.06));
+  filter: drop-shadow(0 10px 18px rgba(74, 45, 40, 0.08));
 }
 
 main > :not(.sakura-corner) {
@@ -128,129 +128,148 @@ main > :not(.sakura-corner) {
 .sakura-twig {
   position: absolute;
   display: block;
-  height: 8px;
-  border-radius: 999px;
   transform-origin: right center;
+  border-radius: 999px;
   background:
-    linear-gradient(180deg, #765246 0%, #573c34 46%, #3f2c27 100%);
+    linear-gradient(180deg, #6f493f 0%, #4f332d 46%, #321f1d 100%);
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.10),
-    0 1px 2px rgba(52,34,28,0.10);
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 1px 2px rgba(55,31,27,.12);
 }
 
-.branch-main {
-  width: 340px;
-  height: 12px;
-  right: -20px;
-  top: 58px;
-  transform: rotate(-18deg);
+.sakura-branch { height: 8px; }
+.sakura-twig { height: 3px; opacity: .98; }
+
+.trunk {
+  width: 420px;
+  height: 13px;
+  right: -25px;
+  top: 102px;
+  transform: rotate(-21deg);
 }
 
-.branch-upper {
-  width: 175px;
-  height: 7px;
-  right: 105px;
-  top: 54px;
-  transform: rotate(-47deg);
-}
-
-.branch-middle {
-  width: 205px;
+.branch-a {
+  width: 240px;
   height: 8px;
-  right: 118px;
-  top: 100px;
-  transform: rotate(9deg);
+  right: 165px;
+  top: 86px;
+  transform: rotate(-49deg);
 }
 
-.branch-lower {
-  width: 155px;
+.branch-b {
+  width: 285px;
+  height: 8px;
+  right: 168px;
+  top: 136px;
+  transform: rotate(5deg);
+}
+
+.branch-c {
+  width: 245px;
   height: 7px;
+  right: 95px;
+  top: 164px;
+  transform: rotate(33deg);
+}
+
+.branch-d {
+  width: 205px;
+  height: 6px;
+  right: 252px;
+  top: 164px;
+  transform: rotate(54deg);
+}
+
+.branch-e {
+  width: 170px;
+  height: 6px;
   right: 52px;
-  top: 123px;
-  transform: rotate(36deg);
+  top: 210px;
+  transform: rotate(14deg);
 }
 
-.sakura-twig {
-  height: 4px;
-  opacity: 0.95;
-}
-
-.twig-a {
-  width: 84px;
-  right: 235px;
-  top: 68px;
-  transform: rotate(-72deg);
-}
-
-.twig-b {
-  width: 74px;
-  right: 205px;
-  top: 114px;
-  transform: rotate(50deg);
-}
-
-.twig-c {
-  width: 67px;
-  right: 122px;
-  top: 139px;
-  transform: rotate(72deg);
-}
+.twig-a { width: 120px; right: 310px; top: 75px; transform: rotate(-72deg); }
+.twig-b { width: 106px; right: 275px; top: 117px; transform: rotate(-28deg); }
+.twig-c { width: 100px; right: 236px; top: 154px; transform: rotate(70deg); }
+.twig-d { width: 92px; right: 165px; top: 180px; transform: rotate(62deg); }
+.twig-e { width: 83px; right: 108px; top: 205px; transform: rotate(50deg); }
+.twig-f { width: 74px; right: 346px; top: 132px; transform: rotate(24deg); }
+.twig-g { width: 66px; right: 55px; top: 231px; transform: rotate(46deg); }
 
 .sakura-blossom,
 .sakura-bud {
   position: absolute;
   display: block;
-  border-radius: 50%;
 }
 
 .sakura-blossom {
-  width: 29px;
-  height: 29px;
+  width: 31px;
+  height: 31px;
+  border-radius: 50%;
   background:
-    radial-gradient(circle at 50% 46%, #b66c7e 0 8%, transparent 9%),
-    radial-gradient(ellipse at 50% 10%, #fff8fa 0 23%, #f4c8d4 24% 38%, transparent 39%),
-    radial-gradient(ellipse at 88% 38%, #fff8fa 0 23%, #f2bccb 24% 38%, transparent 39%),
-    radial-gradient(ellipse at 73% 82%, #fff7f9 0 23%, #efb5c6 24% 38%, transparent 39%),
-    radial-gradient(ellipse at 27% 82%, #fff7f9 0 23%, #f3c0cf 24% 38%, transparent 39%),
-    radial-gradient(ellipse at 12% 38%, #fff8fa 0 23%, #f1bac9 24% 38%, transparent 39%);
-  filter: drop-shadow(0 3px 4px rgba(157, 77, 98, 0.12));
+    radial-gradient(circle at 50% 50%, #d48094 0 7%, #b86278 8% 11%, transparent 12%),
+    radial-gradient(ellipse at 50% 9%, #fff9fb 0 22%, #f7d7df 23% 34%, #efb9c8 35% 41%, transparent 42%),
+    radial-gradient(ellipse at 88% 38%, #fff9fb 0 22%, #f6ced9 23% 34%, #eeb2c3 35% 41%, transparent 42%),
+    radial-gradient(ellipse at 73% 82%, #fff8fa 0 22%, #f4c9d5 23% 34%, #e9aabc 35% 41%, transparent 42%),
+    radial-gradient(ellipse at 27% 82%, #fff8fa 0 22%, #f7d1db 23% 34%, #edafc0 35% 41%, transparent 42%),
+    radial-gradient(ellipse at 12% 38%, #fff9fb 0 22%, #f5ccd7 23% 34%, #ebb0c0 35% 41%, transparent 42%);
+  filter: drop-shadow(0 3px 4px rgba(157,77,98,.12));
 }
 
-.blossom-1 { right: 262px; top: 18px; transform: rotate(8deg) scale(1.08); }
-.blossom-2 { right: 206px; top: 42px; transform: rotate(-9deg) scale(0.86); }
-.blossom-3 { right: 300px; top: 74px; transform: rotate(14deg) scale(0.92); }
-.blossom-4 { right: 233px; top: 101px; transform: rotate(-15deg) scale(1.12); }
-.blossom-5 { right: 166px; top: 86px; transform: rotate(6deg) scale(0.78); }
-.blossom-6 { right: 124px; top: 118px; transform: rotate(-8deg) scale(0.98); }
-.blossom-7 { right: 184px; top: 153px; transform: rotate(18deg) scale(0.82); }
-.blossom-8 { right: 83px; top: 150px; transform: rotate(3deg) scale(0.74); }
-.blossom-9 { right: 336px; top: 115px; transform: rotate(-12deg) scale(0.72); }
+.blossom-1  { right: 390px; top: 18px;  transform: rotate(10deg) scale(1.14); }
+.blossom-2  { right: 350px; top: 34px;  transform: rotate(-8deg) scale(.90); }
+.blossom-3  { right: 315px; top: 20px;  transform: rotate(16deg) scale(.82); }
+.blossom-4  { right: 286px; top: 53px;  transform: rotate(-13deg) scale(1.02); }
+.blossom-5  { right: 410px; top: 66px;  transform: rotate(5deg) scale(.86); }
+.blossom-6  { right: 365px; top: 82px;  transform: rotate(-18deg) scale(1.18); }
+.blossom-7  { right: 322px; top: 92px;  transform: rotate(12deg) scale(1.06); }
+.blossom-8  { right: 276px; top: 101px; transform: rotate(-6deg) scale(.94); }
+.blossom-9  { right: 237px; top: 83px;  transform: rotate(7deg) scale(.82); }
+.blossom-10 { right: 446px; top: 108px; transform: rotate(-12deg) scale(.78); }
+.blossom-11 { right: 404px; top: 123px; transform: rotate(9deg) scale(1.00); }
+.blossom-12 { right: 360px; top: 137px; transform: rotate(-4deg) scale(1.20); }
+.blossom-13 { right: 314px; top: 145px; transform: rotate(13deg) scale(1.04); }
+.blossom-14 { right: 270px; top: 151px; transform: rotate(-9deg) scale(.91); }
+.blossom-15 { right: 225px; top: 154px; transform: rotate(4deg) scale(.82); }
+.blossom-16 { right: 180px; top: 144px; transform: rotate(-15deg) scale(.76); }
+.blossom-17 { right: 417px; top: 171px; transform: rotate(11deg) scale(.92); }
+.blossom-18 { right: 365px; top: 186px; transform: rotate(-7deg) scale(1.08); }
+.blossom-19 { right: 315px; top: 196px; transform: rotate(18deg) scale(1.00); }
+.blossom-20 { right: 264px; top: 203px; transform: rotate(-11deg) scale(.88); }
+.blossom-21 { right: 216px; top: 211px; transform: rotate(6deg) scale(.79); }
+.blossom-22 { right: 160px; top: 220px; transform: rotate(-5deg) scale(.71); }
+.blossom-23 { right: 112px; top: 232px; transform: rotate(13deg) scale(.66); }
+.blossom-24 { right: 64px;  top: 245px; transform: rotate(-8deg) scale(.60); }
 
 .sakura-bud {
   width: 11px;
-  height: 15px;
+  height: 16px;
   border-radius: 65% 65% 52% 52%;
-  background: linear-gradient(145deg, #f8dce4, #d78ba0 70%);
+  background: linear-gradient(145deg, #f8dce4, #d8849a 72%);
   box-shadow: 0 2px 4px rgba(145,71,88,.10);
 }
 
-.bud-1 { right: 329px; top: 42px; transform: rotate(-28deg); }
-.bud-2 { right: 145px; top: 66px; transform: rotate(34deg) scale(.9); }
-.bud-3 { right: 103px; top: 185px; transform: rotate(52deg) scale(.85); }
+.bud-1 { right: 456px; top: 57px;  transform: rotate(-24deg); }
+.bud-2 { right: 302px; top: 76px;  transform: rotate(20deg) scale(.9); }
+.bud-3 { right: 248px; top: 126px; transform: rotate(42deg) scale(.85); }
+.bud-4 { right: 198px; top: 179px; transform: rotate(56deg) scale(.8); }
+.bud-5 { right: 140px; top: 200px; transform: rotate(48deg) scale(.78); }
+.bud-6 { right: 86px;  top: 223px; transform: rotate(60deg) scale(.74); }
+.bud-7 { right: 36px;  top: 248px; transform: rotate(64deg) scale(.7); }
 
 @media (prefers-color-scheme: dark) {
   .sakura-corner {
-    opacity: 0.72;
-    filter: drop-shadow(0 9px 16px rgba(0,0,0,0.16));
+    opacity: .76;
+    filter: drop-shadow(0 10px 18px rgba(0,0,0,.16));
   }
 
   .sakura-branch,
   .sakura-twig {
-    background: linear-gradient(180deg, #7a594e, #5c4239 50%, #44312c);
+    background: linear-gradient(180deg, #75554b, #543a33 52%, #3c2925);
   }
 
   .sakura-blossom {
-    filter: saturate(.85) brightness(.9) drop-shadow(0 3px 5px rgba(0,0,0,.12));
+    filter: saturate(.86) brightness(.92) drop-shadow(0 3px 5px rgba(0,0,0,.14));
   }
 }
 
@@ -816,10 +835,10 @@ kbd {
 
 @media (max-width: 860px) {
   .sakura-corner {
-    right: -155px;
-    top: -42px;
-    transform: scale(0.86);
-    opacity: 0.76;
+    right: -210px;
+    top: -72px;
+    transform: scale(0.80);
+    opacity: 0.78;
   }
 
   main {
@@ -837,10 +856,10 @@ kbd {
 
 @media (max-width: 620px) {
   .sakura-corner {
-    right: -205px;
-    top: -52px;
-    transform: scale(0.68);
-    opacity: 0.58;
+    right: -295px;
+    top: -90px;
+    transform: scale(0.62);
+    opacity: 0.56;
   }
 
   main {
