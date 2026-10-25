@@ -48,24 +48,40 @@ jobs:
           if count != 1:
               raise SystemExit("Current sakura image URL was not replaced")
 
-          replacements = {
-              "top: -58px;\n  right: -105px;\n  width: 620px;\n  height: 355px;":
-                  "top: -72px;\n  right: -92px;\n  width: 390px;\n  height: 521px;",
-              "top: -48px;\n    right: -132px;\n    width: 500px;\n    height: 287px;":
-                  "top: -58px;\n    right: -102px;\n    width: 320px;\n    height: 427px;",
-              "top: -34px;\n    right: -155px;\n    width: 390px;\n    height: 224px;":
-                  "top: -42px;\n    right: -112px;\n    width: 235px;\n    height: 314px;",
-          }
-          for before, after in replacements.items():
-              if before not in css:
-                  raise SystemExit(f"Expected sizing block missing: {before!r}")
-              css = css.replace(before, after, 1)
+          css, desktop_count = re.subn(
+              r'(\.sakura-corner \{\n  position: absolute;\n)'
+              r'  top: [^;]+;\n  right: [^;]+;\n  width: [^;]+;\n  height: [^;]+;\n',
+              r'\1  top: -72px;\n  right: -92px;\n  width: 390px;\n  height: 521px;\n',
+              css,
+              count=1,
+          )
+          if desktop_count != 1:
+              raise SystemExit("Desktop sakura sizing block was not updated")
+
+          css, tablet_count = re.subn(
+              r'(@media \(max-width: 860px\) \{\n  \.sakura-corner \{\n)'
+              r'    top: [^;]+;\n    right: [^;]+;\n    width: [^;]+;\n    height: [^;]+;\n',
+              r'\1    top: -58px;\n    right: -102px;\n    width: 320px;\n    height: 427px;\n',
+              css,
+              count=1,
+          )
+          if tablet_count != 1:
+              raise SystemExit("Tablet sakura sizing block was not updated")
+
+          css, mobile_count = re.subn(
+              r'(@media \(max-width: 620px\) \{\n  \.sakura-corner \{\n)'
+              r'    top: [^;]+;\n    right: [^;]+;\n    width: [^;]+;\n    height: [^;]+;\n',
+              r'\1    top: -42px;\n    right: -112px;\n    width: 235px;\n    height: 314px;\n',
+              css,
+              count=1,
+          )
+          if mobile_count != 1:
+              raise SystemExit("Mobile sakura sizing block was not updated")
 
           css = css.replace("\n  image-rendering: auto;", "", 1)
           path.write_text(css)
 
-          workflow = pathlib.Path(".github/workflows/restore-approved-sakura.yml")
-          workflow.unlink()
+          pathlib.Path(".github/workflows/restore-approved-sakura.yml").unlink()
 
       - name: Commit restored artwork
         run: |
