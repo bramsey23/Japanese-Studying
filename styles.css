@@ -115,11 +115,10 @@ main {
   z-index: 0;
   pointer-events: none;
   opacity: 0.68;
-  background-image: url("https://www.publicdomainpictures.net/pictures/310000/velka/kirschblute-ast-freigestellt-png.png");
+  background-image: url("assets/sakura-overlay.webp");
   background-repeat: no-repeat;
   background-position: top right;
   background-size: contain;
-  image-rendering: auto;
   filter: drop-shadow(0 10px 20px rgba(91, 48, 57, 0.08));
 }
 
@@ -790,5 +789,38 @@ kbd {
   * {
     transition: none !important;
     scroll-behavior: auto !important;
+  }
+}
+
+
+/* HD sakura sizing overrides */
+.sakura-corner {
+  top: -72px;
+  right: -92px;
+  width: 430px;
+  height: 574px;
+  opacity: 0.68;
+  background-position: top right;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+@media (max-width: 860px) {
+  .sakura-corner {
+    top: -58px;
+    right: -102px;
+    width: 350px;
+    height: 467px;
+    opacity: 0.56;
+  }
+}
+
+@media (max-width: 620px) {
+  .sakura-corner {
+    top: -42px;
+    right: -112px;
+    width: 255px;
+    height: 340px;
+    opacity: 0.42;
   }
 }
