@@ -108,14 +108,14 @@ main {
 /* Photorealistic cherry-blossom overlay generated for the site */
 .sakura-corner {
   position: absolute;
-  top: -58px;
-  right: -105px;
-  width: 620px;
-  height: 355px;
+  top: -72px;
+  right: -92px;
+  width: 430px;
+  height: 574px;
   z-index: 0;
   pointer-events: none;
   opacity: 0.68;
-  background-image: url("assets/sakura-overlay.webp");
+  background-image: url("assets/sakura-overlay.webp?v=20b66cd");
   background-repeat: no-repeat;
   background-position: top right;
   background-size: contain;
@@ -696,10 +696,11 @@ kbd {
 
 @media (max-width: 860px) {
   .sakura-corner {
-    right: -210px;
-    top: -72px;
-    transform: scale(0.80);
-    opacity: 0.78;
+    top: -58px;
+    right: -102px;
+    width: 350px;
+    height: 467px;
+    opacity: 0.56;
   }
 
   main {
@@ -717,10 +718,11 @@ kbd {
 
 @media (max-width: 620px) {
   .sakura-corner {
-    right: -295px;
-    top: -90px;
-    transform: scale(0.62);
-    opacity: 0.56;
+    top: -42px;
+    right: -112px;
+    width: 255px;
+    height: 340px;
+    opacity: 0.42;
   }
 
   main {
@@ -789,38 +791,5 @@ kbd {
   * {
     transition: none !important;
     scroll-behavior: auto !important;
-  }
-}
-
-
-/* HD sakura sizing overrides */
-.sakura-corner {
-  top: -72px;
-  right: -92px;
-  width: 430px;
-  height: 574px;
-  opacity: 0.68;
-  background-position: top right;
-  background-size: contain;
-  background-repeat: no-repeat;
-}
-
-@media (max-width: 860px) {
-  .sakura-corner {
-    top: -58px;
-    right: -102px;
-    width: 350px;
-    height: 467px;
-    opacity: 0.56;
-  }
-}
-
-@media (max-width: 620px) {
-  .sakura-corner {
-    top: -42px;
-    right: -112px;
-    width: 255px;
-    height: 340px;
-    opacity: 0.42;
   }
 }
